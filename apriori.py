@@ -100,10 +100,10 @@ def printResults(items, rules):
     # Imprime os conjuntos de itens gerados classificados por suporte e as regras de confiança classificadas por confiança
     for item, support in sorted(items, key=lambda x: x[1]):
         print("item: %s , %.3f" % (str(item), support))
-    print("\n------------------------ RULES:")
+    print("\n------------------------ REGRAS:")
     for rule, confidence in sorted(rules, key=lambda x: x[1]):
         pre, post = rule
-        print("Rule: %s ==> %s , %.3f" % (str(pre), str(post), confidence))
+        print("Regra: %s ==> %s , %.3f" % (str(pre), str(post), confidence))
 
 
 def to_str_results(items, rules):
