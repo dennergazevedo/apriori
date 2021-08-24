@@ -22,11 +22,11 @@ confidence_helper = ''' > Confiança(A->B) = Suporte(AUB)/Suporte(A)') '''
 st.markdown('---')
 
 support = st.slider("Suporte Mínimo:", min_value=0.1,
-                    max_value=0.9, value=0.15,
+                    max_value=0.9, value=0.5,
                     help=support_helper)
 
 confidence = st.slider("Confiança Mínima:", min_value=0.1,
-                       max_value=0.9, value=0.6, help=confidence_helper)
+                       max_value=0.9, value=0.5, help=confidence_helper)
 
 inFile = dataFromFile(default_csv)
 
