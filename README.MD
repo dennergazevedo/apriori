@@ -3,7 +3,7 @@ Algoritmo usado para estudo de Data Mining, implementação de algoritmos rápid
 **Casos de Síndrome Respiratória Aguda Grave Hospitalizados**
 
 ## Streamlit App
-Biblioteca utilizada para visualizar um aplicativo interativo ao vivo e com maior facilidade modificar os valores de entrada.
+Biblioteca utilizada para visualizar um aplicativo interativo ao vivo e com maior facilidade para modificar os valores de entrada.
 ### Como usar:
 Instale a biblioteca através do comando:
 ```
