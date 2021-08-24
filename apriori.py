@@ -1,12 +1,3 @@
-"""
-Description     : Simple Python implementation of the Apriori Algorithm
-
-Usage:
-    $python apriori.py -f DATASET.csv -s minSupport  -c minConfidence
-
-    $python apriori.py -f DATASET.csv -s 0.15 -c 0.6
-"""
-
 import sys
 
 from itertools import chain, combinations
@@ -15,13 +6,13 @@ from optparse import OptionParser
 
 
 def subsets(arr):
-    """ Returns non empty subsets of arr"""
+    # Retorna um conjunto não vazio de Array
     return chain(*[combinations(arr, i + 1) for i, a in enumerate(arr)])
 
 
 def returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet):
-    """calculates the support for items in the itemSet and returns a subset
-    of the itemSet each of whose elements satisfies the minimum support"""
+    # Calcula o suporte para itens no itemSet e retorna um subconjunto do itemSet
+    # Cada um de cujos elementos satisfaz o suporte mínimo
     _itemSet = set()
     localSet = defaultdict(int)
 
@@ -41,7 +32,7 @@ def returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet):
 
 
 def joinSet(itemSet, length):
-    """Join a set with itself and returns the n-element itemsets"""
+    # Une um conjunto com ele mesmo e retorna os conjuntos de itens de n elementos
     return set(
         [i.union(j) for i in itemSet for j in itemSet if len(i.union(j)) == length]
     )
@@ -54,26 +45,22 @@ def getItemSetTransactionList(data_iterator):
         transaction = frozenset(record)
         transactionList.append(transaction)
         for item in transaction:
-            itemSet.add(frozenset([item]))  # Generate 1-itemSets
+            itemSet.add(frozenset([item]))
     return itemSet, transactionList
 
 
 def runApriori(data_iter, minSupport, minConfidence):
-    """
-    run the apriori algorithm. data_iter is a record iterator
-    Return both:
-     - items (tuple, support)
-     - rules ((pretuple, posttuple), confidence)
-    """
+    # Executa o algoritmo apriori
+    # data_iter é um iterador de registro
     itemSet, transactionList = getItemSetTransactionList(data_iter)
 
     freqSet = defaultdict(int)
     largeSet = dict()
-    # Global dictionary which stores (key=n-itemSets,value=support)
-    # which satisfy minSupport
+    # Dicionário global que armazena (chave = n-itemSets, valor = suporte)
+    # Satisfazem o minSuporte
 
     assocRules = dict()
-    # Dictionary which stores Association Rules
+    # Dicionário que armazena regras de associação
 
     oneCSet = returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet)
 
@@ -89,7 +76,7 @@ def runApriori(data_iter, minSupport, minConfidence):
         k = k + 1
 
     def getSupport(item):
-        """local function which Returns the support of an item"""
+        # Retorna o suporte de um item
         return float(freqSet[item]) / len(transactionList)
 
     toRetItems = []
@@ -110,7 +97,7 @@ def runApriori(data_iter, minSupport, minConfidence):
 
 
 def printResults(items, rules):
-    """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
+    # Imprime os conjuntos de itens gerados classificados por suporte e as regras de confiança classificadas por confiança
     for item, support in sorted(items, key=lambda x: x[1]):
         print("item: %s , %.3f" % (str(item), support))
     print("\n------------------------ RULES:")
@@ -120,7 +107,7 @@ def printResults(items, rules):
 
 
 def to_str_results(items, rules):
-    """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
+    # Imprime os conjuntos de itens gerados classificados por suporte e as regras de confiança classificadas por confiança
     i, r = [], []
     for item, support in sorted(items, key=lambda x: x[1]):
         x = "item: %s , %.3f" % (str(item), support)
@@ -135,10 +122,10 @@ def to_str_results(items, rules):
 
 
 def dataFromFile(fname):
-    """Function which reads from the file and yields a generator"""
+    # Função que lê o arquivo e produz um gerador
     with open(fname, "rU") as file_iter:
         for line in file_iter:
-            line = line.strip().rstrip(",")  # Remove trailing comma
+            line = line.strip().rstrip(",")
             record = frozenset(line.split(","))
             yield record
 
@@ -147,21 +134,21 @@ if __name__ == "__main__":
 
     optparser = OptionParser()
     optparser.add_option(
-        "-f", "--inputFile", dest="input", help="filename containing csv", default=None
+        "-f", "--arquivo", dest="input", help="Nome do arquivo CSV", default=None
     )
     optparser.add_option(
         "-s",
-        "--minSupport",
+        "--minSuporte",
         dest="minS",
-        help="minimum support value",
+        help="Valor do suporte mínimo",
         default=0.15,
         type="float",
     )
     optparser.add_option(
         "-c",
-        "--minConfidence",
+        "--minConfianca",
         dest="minC",
-        help="minimum confidence value",
+        help="Valor da confiança mínima",
         default=0.6,
         type="float",
     )
@@ -174,8 +161,8 @@ if __name__ == "__main__":
     elif options.input is not None:
         inFile = dataFromFile(options.input)
     else:
-        print("No dataset filename specified, system with exit\n")
-        sys.exit("System will exit")
+        print("Falha ao localizar arquivo\n")
+        sys.exit("Saindo...")
 
     minSupport = options.minS
     minConfidence = options.minC
